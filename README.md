@@ -16,6 +16,9 @@
 **[Solution]** <br>
 임대주택과 거주 관련 데이터를 활용해 RandomForest와 Catboost 기반 예측 모델 개발
 
+**[Key point]** <br>
+-
+
 - - -
 
 ### Timeline
