@@ -81,10 +81,10 @@ Public: / Private: <br>
 **※ Final과 동일하되 추가한 사항만 기재**
 ### 외부 데이터
 - `위도`, `경도`, `subway_dist`, `환승역 수` <br>
-수집 및 전처리 과정은 [Here](https://github.com/rbill109/Dacon_2021_Nextlevel/tree/master/source_code/ProcessedData/External3)을 참고
+수집 및 전처리 과정은 [이곳](https://github.com/rbill109/Dacon_2021_Nextlevel/tree/master/source_code/ProcessedData/External3)을 참고
 
 - `세대당_인구`, `남/여비율`, `남/여_0~19세`, `남/여_20~39세`, `남/여_40~69세`, `남/여_70세이상` <br>
-수집 및 전처리 과정은 [Here](https://github.com/rbill109/Dacon_2021_Nextlevel/tree/master/source_code/ProcessedData/External2)을 참고
+수집 및 전처리 과정은 [이곳](https://github.com/rbill109/Dacon_2021_Nextlevel/tree/master/source_code/ProcessedData/External2)을 참고
 
 ### 1차 전처리
 #### 변수별 전처리
