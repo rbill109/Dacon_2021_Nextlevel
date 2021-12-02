@@ -17,7 +17,8 @@
 임대주택과 거주 관련 데이터를 활용해 RandomForest와 Catboost 기반 예측 모델 개발
 
 **[Key point]** <br>
--
+- 정보 손실을 막기 위해 target 변수를 재구조화
+- 
 
 - - -
 
@@ -29,3 +30,6 @@ Next Level / 유은영, 남승지, 조유림, 조유민
 
 ### Role
 데이터 전처리 및 교차 검증
+
+### Presentation
+제출 모델에 대한 설명은 [이곳](https://github.com/rbill109/Dacon_2021_Nextlevel/blob/master/Presentation.md)을 참고
