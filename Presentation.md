@@ -1,79 +1,112 @@
-# 최종 제출 모델
+# 모델링 설명
 
-## Final_1
-Public:  / Private: <br>
+## Final.ipynb
+Public:  109 / Private: 110<br>
+
+---
 
 ### 1차 전처리
-<code>임대건물구분</code>
-- 상가 데이터 제거
+#### 변수별 전처리
+`임대건물구분` <br>
+- 상가 데이터는 제외
 
-<code>환승역 수</code>
-- 특정 단지코드에서 10분 거리에 지하철이 없는 지역의 <code>환승역 수</code>를 모두 0으로 대체
-
-<code>전용면적</code>
-<code>전용면적</code> 단위를 다음과 같이 축소
-- 10~19 -> 15
-- 20~29 -> 25
+`전용면적` <br>
+`전용면적` 단위를 다음과 같이 통일
+- 10~19 -> 10
+- 20~29 -> 20
 - ...
 
-<code>공급유형</code>
-dummy화한 뒤에 공공분양, 공공임대(5년), 장기전세는 0으로 대체
-
+#### 결측치 처리
+`임대료`, `임대보증금` <br>
+- NA는 0으로 대체
 
 #### 파생변수 생성
-- <code>지역x세대당인구</code>: <code>지역별 등록차량수</code> × <code>세대당 인구수</code> <br>
-<code>등록차량수</code>를 지역별로 평균을 낸 값에 단지코드별 정보를 더해주기 위해 <code>세대당_인구</code>를 곱해서 생성
+`공가비율`: `공가수`/`총세대수` <br>
 
-- <code>공가비율</code>: <code>공가수</code>/<code>총세대수</code>
+`연령별_비율` <br>
+- age_gender_info 데이터를 사용해 여자와 남자의 연령비율을 합해 생성
 
-- <code>연령별 인구수</code>: <code>연령별_비율</code> × <code>전용면적별세대수</code>
+---
 
 ### 2차 전처리(1차원 병합)
-- 최종 예측값은 단지코드 기준이지만 단지코드별로 unique하지 않은 column이 존재하기 때문에 병합이 필요함 
-- 전용면적별 임대료, 임대보증금의 차이가 크기 때문에 단지코드 기준으로 평균을 내는 것은 정보손실 우려가 있음
+- 최종 예측값은 단지코드 기준이지만 단지코드별로 unique하지 않은 column(`자격유형`, `임대보증금`, `임대료`, `전용면적별세대수`, `전용면적`, `공급유형`)이 존재하기 때문에 병합이 필요함 
+- 전용면적별로 `임대료`, `임대보증금`의 차이가 크기 때문에 단지코드 기준으로 평균을 내는 것은 정보손실 우려가 있음
 
-∴ 단지코드, 전용면적, 공급유형을 기준으로 평균을 내서 병합 <br>
+∴ `단지코드`, `전용면적`, `공급유형`을 기준으로 `전용면적별세대수`는 합하고, `임대료`, `임대보증금`는 평균을 내서 병합 
+<br>
+▶ `임대료`, `임대보증금`에서 NA 발생 시 `지역`, `전용면적`, `공급유형`을 기준으로 평균을 낸 값으로 대체
+
+--- 
 
 ### 3차 전처리
+#### 변수별 전처리
+`공급유형`, `전용면적` <br>
+- dummy화한 뒤에 공공분양, 공공임대(5년), 장기전세는 0으로 대체
+
+
 #### 파생변수 생성
-- <code>y1</code>: <code>등록차량수</code> × <code>ratio</code>
-- <code>단지내주차면수_new</code>: <code>단지내주차면수</code> × <code>ratio</code>
- <code>단지내주차면수</code>와 <code>등록차량수</code>간의 correlation이 높기 때문에 단지코드별 전용면적세대수의 총합 대비 전용면적세대수 비율을 곱해 생성
+- `전용면적별세대수_비율`: `전용면적별세대수`/`총세대수` <br>
+아파트 총세대수와 해당 면적에 속한 세대수 비율
 
-- <code>y2</code>: <code>y1</code>/<code>단지내주차면수_new</code>
-최종 target
+- **`면적별_등록차량수`**(target): `등록차량수` × `ratio`, 
+`면적별_단지내주차면수`: `단지내주차면수` × `ratio` <br>
+`단지내주차면수`와 `등록차량수`간의 correlation이 높기 때문에 `전용면적별세대수_비율`을 곱해 생성 <br>
+단지코드별로 값이 동일한 `등록차량수`만으로는 전용면적별세대수에 따른 임대료, 임대보증금 차이 같은 정보를 반영해주지 못하므로 `전용면적별세대수_비율`을 곱해 이를 반영
 
-#### 이상치 제거
-<code>y2</code> 기준 이상치로 의심되는 단지코드 'C1722' 제거
+- `연령별 인구수`: `연령별_비율` × `전용면적별세대수_비율` <br>
+특정 단지코드의 전용면적별 인구분포를 나타냄 <br>
+기존 `연령별_비율`은 제거
+
+#### 이상치 처리
+`y2` 기준 이상치로 의심되는 단지코드 'C1722' 제거
+
+---
 
 ### 모델링
-Step 1. <code>y2</code>를 target으로 두고 학습 및 예측
-Step 2. 예측한 <code>y2</code>에 <code>단지내주차면수_new</code>를 다시 곱해 <code>y1</code> 예측값을 계산
-Step 3. 단지코드별 예측을 위해 <code>y1</code> 예측값을 단지코드별로 합하고, 실제 <code>y1</code> 역시 동일한 과정을 거친 뒤에 MAE 계산
+
 
 ### 사용한 변수
-- <code>전용면적</code>&nbsp;&nbsp;&nbsp;<code>전용면적별세대수</code>&nbsp;&nbsp;&nbsp;<code>총세대수</code>&nbsp;&nbsp;&nbsp;<code>공가수</code>&nbsp;&nbsp;&nbsp;
-
-- <code>지하철역</code>&nbsp;&nbsp;&nbsp;<code>버스정류장</code>&nbsp;&nbsp;&nbsp;<code>위도</code>&nbsp;&nbsp;&nbsp;<code>경도</code>&nbsp;&nbsp;&nbsp;<code>subway_dist</code>&nbsp;&nbsp;&nbsp;<code>환승역 수</code>&nbsp;&nbsp;&nbsp;
-
-- <code>총인구수</code>&nbsp;&nbsp;&nbsp;<code>세대당_인구</code>&nbsp;&nbsp;&nbsp;<code>남/여비율</code>&nbsp;&nbsp;&nbsp;<code>남/여_0-19세</code>&nbsp;&nbsp;&nbsp;<code>남/여_20-39세</code>&nbsp;&nbsp;&nbsp;<code>남/여_40-69세</code>&nbsp;&nbsp;&nbsp;<code>남/여_70세이상</code>&nbsp;&nbsp;&nbsp;
-- <code>지역별 등록차량수</code>&nbsp;&nbsp;&nbsp;<code>지역x세대당인구</code>&nbsp;&nbsp;&nbsp;<code>공가비율</code>&nbsp;&nbsp;&nbsp;
-- <code>0-19 인구수</code>&nbsp;&nbsp;&nbsp;<code>20-39 인구수</code>&nbsp;&nbsp;&nbsp;<code>40-69 인구수</code>&nbsp;&nbsp;&nbsp;<code>70세이상 인구수</code>&nbsp;&nbsp;&nbsp;
-- <code>공공분양</code>&nbsp;&nbsp;&nbsp;<code>공공임대(10년)</code>&nbsp;&nbsp;&nbsp;<code>공공임대(50년)</code>&nbsp;&nbsp;&nbsp;<code>공공임대(5년)</code>&nbsp;&nbsp;&nbsp;<code>공공임대(분납)</code>&nbsp;&nbsp;&nbsp;<code>국민임대</code>&nbsp;&nbsp;&nbsp;<code>영구임대</code>&nbsp;&nbsp;&nbsp;<code>장기전세</code>&nbsp;&nbsp;&nbsp;<code>행복주택</code>&nbsp;&nbsp;&nbsp;
-- <code>임대료</code>&nbsp;&nbsp;&nbsp;<code>임대보증금</code>
+- `면적별_단지내주차면수`&nbsp;&nbsp;&nbsp;`공가비율`&nbsp;&nbsp;&nbsp;`총세대수`&nbsp;&nbsp;&nbsp;`임대료`&nbsp;&nbsp;&nbsp;`임대보증금`&nbsp;&nbsp;&nbsp;
+- `공공분양`&nbsp;&nbsp;&nbsp;`공공임대(10년)`&nbsp;&nbsp;&nbsp;`공공임대(50년)`&nbsp;&nbsp;&nbsp;`공공임대(분납)`&nbsp;&nbsp;&nbsp;`국민임대`&nbsp;&nbsp;&nbsp;`영구임대`&nbsp;&nbsp;&nbsp;`장기전세`&nbsp;&nbsp;&nbsp;`행복주택`&nbsp;&nbsp;&nbsp;
+- `면적_10`&nbsp;&nbsp;&nbsp;`면적_20`&nbsp;&nbsp;&nbsp;`면적_30`&nbsp;&nbsp;&nbsp;`면적_40`&nbsp;&nbsp;&nbsp;`면적_50`&nbsp;&nbsp;&nbsp;`면적_60`&nbsp;&nbsp;&nbsp;`면적_70`&nbsp;&nbsp;&nbsp;`면적_80`&nbsp;&nbsp;&nbsp;
+- `0~19세_인구수`&nbsp;&nbsp;&nbsp;`20~39세_인구수`&nbsp;&nbsp;&nbsp;`40~69세_인구수`&nbsp;&nbsp;&nbsp;`70세이상_인구수`
 
 ### 후처리
 주최 측 오류였던 3개 단지코드를 제외하기 위해 0으로 대체
 
 ---
 
-## Final_2
-Public: 109 / Private: 110 <br>
+## modeling1.ipynb
+Public: / Private: <br>
 
+**※ Final과 동일하되 추가한 사항만 기재**
+### 외부 데이터
+- `위도`, `경도`, `subway_dist`, `환승역 수`, `세대당_인구`
+
+### 1차 전처리
+#### 변수별 전처리
+`환승역 수` <br>
+- 특정 단지코드에서 10분 거리에 지하철이 없는 지역의 `환승역 수`를 모두 0으로 대체
+
+#### 파생변수 생성
+`지역x세대당인구`: `지역별 등록차량수` × `세대당_인구수` <br>
+- `등록차량수`를 지역별로 평균을 낸 값에 단지코드별 정보를 더해주기 위해 `세대당_인구`를 곱해서 생성
 
 ---
 
-## Addition_1
-Public: / Private: <br>
+### 3차 전처리
+#### 변수별 전처리
+ `전용면적` <br>
+dummy화 X
 
-<code></code>
+### 사용한 변수
+- `총세대수`&nbsp;&nbsp;&nbsp;`공가수`&nbsp;&nbsp;&nbsp;`공가비율`&nbsp;&nbsp;&nbsp;`임대료`&nbsp;&nbsp;&nbsp;`임대보증금`
+- `지하철역`&nbsp;&nbsp;&nbsp;`버스정류장`&nbsp;&nbsp;&nbsp;`위도`&nbsp;&nbsp;&nbsp;`경도`&nbsp;&nbsp;&nbsp;`subway_dist`&nbsp;&nbsp;&nbsp;`환승역 수`&nbsp;&nbsp;&nbsp;
+- `총인구수`&nbsp;&nbsp;&nbsp;`세대당_인구`&nbsp;&nbsp;&nbsp;`남/여비율`&nbsp;&nbsp;&nbsp;`남/여_0~19세`&nbsp;&nbsp;&nbsp;`남/여_20~39세`&nbsp;&nbsp;&nbsp;`남/여_40~69세`&nbsp;&nbsp;&nbsp;`남/여_70세이상`&nbsp;&nbsp;&nbsp;`지역별 등록차량수`&nbsp;&nbsp;&nbsp;`0~19 인구수`&nbsp;&nbsp;&nbsp;`20~39 인구수`&nbsp;&nbsp;&nbsp;`40~69 인구수`&nbsp;&nbsp;&nbsp;`70세이상 인구수`&nbsp;&nbsp;&nbsp;
+- `공공분양`&nbsp;&nbsp;&nbsp;`공공임대(10년)`&nbsp;&nbsp;&nbsp;`공공임대(50년)`&nbsp;&nbsp;&nbsp;`공공임대(5년)`&nbsp;&nbsp;&nbsp;`공공임대(분납)`&nbsp;&nbsp;&nbsp;`국민임대`&nbsp;&nbsp;&nbsp;`영구임대`&nbsp;&nbsp;&nbsp;`장기전세`&nbsp;&nbsp;&nbsp;`행복주택`&nbsp;&nbsp;&nbsp;
+- `전용면적`&nbsp;&nbsp;&nbsp;`전용면적별세대수`&nbsp;&nbsp;&nbsp;
+- `지역x세대당인구`&nbsp;&nbsp;&nbsp;
+
+
+
+
