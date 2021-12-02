@@ -4,19 +4,19 @@
 Public:  / Private: <br>
 
 ### 1차 전처리
-#### <code>임대건물구분</code>
+<code>임대건물구분</code>
 - 상가 데이터 제거
 
-#### <code>환승역 수</code>
+<code>환승역 수</code>
 - 특정 단지코드에서 10분 거리에 지하철이 없는 지역의 <code>환승역 수</code>를 모두 0으로 대체
 
-#### <code>전용면적</code>
+<code>전용면적</code>
 <code>전용면적</code> 단위를 다음과 같이 축소
 - 10~19 -> 15
 - 20~29 -> 25
 - ...
 
-#### <code>공급유형</code>
+<code>공급유형</code>
 dummy화한 뒤에 공공분양, 공공임대(5년), 장기전세는 0으로 대체
 
 
@@ -59,10 +59,8 @@ Step 3. 단지코드별 예측을 위해 <code>y1</code> 예측값을 단지코�
 - <code>총인구수</code>&nbsp;&nbsp;&nbsp;<code>세대당_인구</code>&nbsp;&nbsp;&nbsp;<code>남/여비율</code>&nbsp;&nbsp;&nbsp;<code>남/여_0~19세</code>&nbsp;&nbsp;&nbsp;<code>남/여_20~39세</code>&nbsp;&nbsp;&nbsp;<code>남/여_40~69세</code>&nbsp;&nbsp;&nbsp;<code>남/여_70세이상</code>&nbsp;&nbsp;&nbsp;
 - <code>지역별 등록차량수</code>&nbsp;&nbsp;&nbsp;<code>지역x세대당인구</code>&nbsp;&nbsp;&nbsp;<code>공가비율</code>&nbsp;&nbsp;&nbsp;
 - <code>0~19 인구수</code>&nbsp;&nbsp;&nbsp;<code>20~39 인구수</code>&nbsp;&nbsp;&nbsp;<code>40~69 인구수</code>&nbsp;&nbsp;&nbsp;<code>70세이상 인구수</code>&nbsp;&nbsp;&nbsp;
-<br>
 - <code>공공분양</code>&nbsp;&nbsp;&nbsp;<code>공공임대(10년)</code>&nbsp;&nbsp;&nbsp;<code>공공임대(50년)</code>&nbsp;&nbsp;&nbsp;<code>공공임대(5년)</code>&nbsp;&nbsp;&nbsp;<code>공공임대(분납)</code>&nbsp;&nbsp;&nbsp;<code>국민임대</code>&nbsp;&nbsp;&nbsp;<code>영구임대</code>&nbsp;&nbsp;&nbsp;<code>장기전세</code>&nbsp;&nbsp;&nbsp;<code>행복주택</code>&nbsp;&nbsp;&nbsp;
-- <code>임대료</code>&nbsp;&nbsp;&nbsp;<code>임대보증금
-</code>
+- <code>임대료</code>&nbsp;&nbsp;&nbsp;<code>임대보증금</code>
 
 ### 후처리
 주최 측 오류였던 3개 단지코드를 제외하기 위해 0으로 대체
