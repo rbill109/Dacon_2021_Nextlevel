@@ -75,7 +75,7 @@ Public:  109 / Private: 110<br>
 
 ---
 
-# modeling1.ipynb
+# [modeling1.ipynb](https://github.com/rbill109/Dacon_2021_Nextlevel/blob/master/source_code/backup/Modeling/modeling1.ipynb)
 Public: / Private: <br>
 
 **※ Final과 동일하되 추가한 사항만 기재**
