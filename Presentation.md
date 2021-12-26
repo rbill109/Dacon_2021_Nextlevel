@@ -109,10 +109,11 @@ dummy화 X
 ### 사용한 변수
 - `총세대수`&nbsp;&nbsp;&nbsp;`공가수`&nbsp;&nbsp;&nbsp;`공가비율`&nbsp;&nbsp;&nbsp;`임대료`&nbsp;&nbsp;&nbsp;`임대보증금`
 - `지하철역`&nbsp;&nbsp;&nbsp;`버스정류장`&nbsp;&nbsp;&nbsp;`위도`&nbsp;&nbsp;&nbsp;`경도`&nbsp;&nbsp;&nbsp;`subway_dist`&nbsp;&nbsp;&nbsp;`환승역 수`&nbsp;&nbsp;&nbsp;
-- `총인구수`&nbsp;&nbsp;&nbsp;`세대당_인구`&nbsp;&nbsp;&nbsp;`남/여비율`&nbsp;&nbsp;&nbsp;`남/여_0~19세`&nbsp;&nbsp;&nbsp;`남/여_20~39세`&nbsp;&nbsp;&nbsp;`남/여_40~69세`&nbsp;&nbsp;&nbsp;`남/여_70세이상`&nbsp;&nbsp;&nbsp;`지역별 등록차량수`&nbsp;&nbsp;&nbsp;`0~19 인구수`&nbsp;&nbsp;&nbsp;`20~39 인구수`&nbsp;&nbsp;&nbsp;`40~69 인구수`&nbsp;&nbsp;&nbsp;`70세이상 인구수`&nbsp;&nbsp;&nbsp;
+- `총인구수`&nbsp;&nbsp;&nbsp;`세대당_인구`&nbsp;&nbsp;&nbsp;`남/여비율`&nbsp;&nbsp;&nbsp;`남/여_0~19세`&nbsp;&nbsp;&nbsp;`남/여_20~39세`&nbsp;&nbsp;&nbsp;`남/여_40~69세`&nbsp;&nbsp;&nbsp;`남/여_70세이상`&nbsp;&nbsp;&nbsp;`0~19 인구수`&nbsp;&nbsp;&nbsp;`20~39 인구수`&nbsp;&nbsp;&nbsp;`40~69 인구수`&nbsp;&nbsp;&nbsp;`70세이상 인구수`&nbsp;&nbsp;&nbsp;
 - `공공분양`&nbsp;&nbsp;&nbsp;`공공임대(10년)`&nbsp;&nbsp;&nbsp;`공공임대(50년)`&nbsp;&nbsp;&nbsp;`공공임대(5년)`&nbsp;&nbsp;&nbsp;`공공임대(분납)`&nbsp;&nbsp;&nbsp;`국민임대`&nbsp;&nbsp;&nbsp;`영구임대`&nbsp;&nbsp;&nbsp;`장기전세`&nbsp;&nbsp;&nbsp;`행복주택`&nbsp;&nbsp;&nbsp;
 - `전용면적`&nbsp;&nbsp;&nbsp;`전용면적별세대수`&nbsp;&nbsp;&nbsp;
 - `지역x세대당인구`&nbsp;&nbsp;&nbsp;
+- `지역별 등록차량수`&nbsp;&nbsp;&nbsp;
 
 
 
